@@ -1,0 +1,17 @@
+<template>
+    <lightning-card>
+        <lightning-input
+        label="Enter a Number"
+        value={newAge}
+        onchange={handleChange}
+        ></lightning-input>
+
+        <p>Name={name}</p>
+        <p>Age={age}</p>
+        
+        <lightning-button
+        label="Update Age"
+        onclick={handleClick}
+        ></lightning-button>
+    </lightning-card>
+</template>

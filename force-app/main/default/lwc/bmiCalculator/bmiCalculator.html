@@ -1,0 +1,15 @@
+<template>
+    <lightning-card title={cardTitle}>
+        <!-- Private Non - reactive property Example -->
+        <!-- <lightning-button label="Change private property value" onclick={changePrivatePropertyHandler}></lightning-button> -->
+         <lightning-input type="number" step="0.01"
+         label="Weight in kilogram"
+         onchange={onWeightChange}></lightning-input>
+         <lightning-input type="number" step="1"
+         label="height in centimeter"
+         onchange={onHeightChange}></lightning-input>
+         <lightning-button label="Get BMI"
+         onclick={calculateBMI}></lightning-button>
+         <p>{bmiValue}</p>
+    </lightning-card>
+</template>
