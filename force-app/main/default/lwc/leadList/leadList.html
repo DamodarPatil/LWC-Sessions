@@ -1,16 +1,13 @@
 <template>
-    <lightning-card title="Lead List">
-        <template if:true={leads}>
-            <lightning-datatable
-                data={leads}
-                columns={columns}
-                key-field="Id">
-            </lightning-datatable>
-        </template>
-        <template if:true={error}>
-            <div class="slds-text-color_error">
-                <p>Error fetching leads: {error}</p>
-            </div>
-        </template>
-    </lightning-card>
+  <lightning-card title="Lead List">
+    <template if:true={leads}>
+      <lightning-datatable data={leads} columns={columns} key-field="Id">
+      </lightning-datatable>
+    </template>
+    <template if:true={error}>
+      <div class="slds-text-color_error">
+        <p>Error fetching leads: {error}</p>
+      </div>
+    </template>
+  </lightning-card>
 </template>
