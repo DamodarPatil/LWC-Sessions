@@ -1,13 +1,67 @@
 <template>
-  <lightning-card title="Lead List">
-    <template if:true={leads}>
-      <lightning-datatable data={leads} columns={columns} key-field="Id">
-      </lightning-datatable>
-    </template>
-    <template if:true={error}>
-      <div class="slds-text-color_error">
-        <p>Error fetching leads: {error}</p>
-      </div>
-    </template>
+  <!-- Existing datatable -->
+  <lightning-card title="Lead List with Actions">
+    <lightning-datatable
+      key-field="Id"
+      data={leads}
+      columns={columns}
+      onrowaction={handleRowAction}
+    >
+    </lightning-datatable>
   </lightning-card>
+
+  <!-- Modal for Edit -->
+  <template if:true={isEditModelOpen}>
+    <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+      <div class="slds-modal__container">
+        <header class="slds-modal__header">
+          <h2 class="slds-text-heading_medium">Edit Lead</h2>
+        </header>
+        <div class="slds-modal__content slds-p-around_medium">
+          <lightning-input
+            label="First Name"
+            value={editLead.FirstName}
+            onchange={handleInputChange}
+            data-field="FirstName"
+          ></lightning-input>
+          <lightning-input
+            label="Last Name"
+            value={editLead.LastName}
+            onchange={handleInputChange}
+            data-field="LastName"
+          ></lightning-input>
+          <lightning-input
+            label="Email"
+            value={editLead.Email}
+            onchange={handleInputChange}
+            data-field="Email"
+          ></lightning-input>
+          <lightning-input
+            label="Phone"
+            value={editLead.Phone}
+            onchange={handleInputChange}
+            data-field="Phone"
+          ></lightning-input>
+          <lightning-input
+            label="Company"
+            value={editLead.Company}
+            onchange={handleInputChange}
+            data-field="Company"
+          ></lightning-input>
+        </div>
+        <footer class="slds-modal__footer">
+          <lightning-button
+            label="Cancel"
+            onclick={closeModal}
+          ></lightning-button>
+          <lightning-button
+            label="Save"
+            variant="brand"
+            onclick={updateLead}
+          ></lightning-button>
+        </footer>
+      </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+  </template>
 </template>
