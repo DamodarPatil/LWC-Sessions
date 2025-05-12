@@ -44,7 +44,6 @@ export default class LeadCreator extends NavigationMixin(LightningElement) {
         this.company = "";
       })
       .catch((error) => {
-        console.error(error);
         this.showToast("Error", error.body.message, "error");
       });
   }
