@@ -1,0 +1,13 @@
+<template>
+    <lightning-card title="Account Dashboard">
+        <lightning-combobox label="Industry" value={selectedIndustry}
+            options={industryOptions} onchange={handleIndustryChange}>
+        </lightning-combobox>
+
+        <lightning-combobox label="Rating" value={selectedRating}
+            options={ratingOptions} onchange={handleRatingChange}>
+        </lightning-combobox>
+
+        <c-account-list industry={selectedIndustry} rating={selectedRating}></c-account-list>
+    </lightning-card>
+</template>

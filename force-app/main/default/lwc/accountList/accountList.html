@@ -1,0 +1,14 @@
+<template>
+    <template if:true={accounts.data}>
+        <lightning-card title="Filtered Accounts">
+            <lightning-datatable
+                key-field="Id"
+                data={accounts.data}
+                columns={columns}>
+            </lightning-datatable>
+        </lightning-card>
+    </template>
+    <template if:true={accounts.error}>
+        <p>Error fetching accounts: {accounts.error.message}</p>
+    </template>
+</template>
