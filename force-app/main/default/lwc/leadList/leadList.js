@@ -12,141 +12,11 @@ import LEAD_EMAIL from "@salesforce/schema/Lead.Email";
 import LEAD_COMPANY from "@salesforce/schema/Lead.Company";
 import LEAD_PHONE from "@salesforce/schema/Lead.Phone";
 export default class LeadList extends LightningElement {
-  /*  leads;
-  error;
-  wiredLeadsResult; //Store the wired result to use with refreshApex
-
-  //track the record being edited
-  selectedLead;
-  isEditModelOpen = false;
-
-  //track the record being deleted
-  leadToDelete;
-  isDeleteModelOpen = false;
-
-  // Wire sevice to call the apex method
-  @wire(getLeads)
-  wiredLeads(result) {
-    this.wiredLeadsResult = result;
-    if (result.data) {
-      this.leads = result.data;
-      this.error = undefined;
-    } else if (result.error) {
-      this.leads = undefined;
-      this.error = result.error.body?.message || "Unknown error";
-    }
-  }
-
-  // Columns for lighting-datatable
-  columns = [
-    { label: "Name", fieldName: "Name" },
-    { label: "Email", fieldName: "Email" },
-    { label: "Phone", fieldName: "Phone" },
-    { label: "Company", fieldName: "Company" },
-    {
-      type: "action",
-      typeAttributes: {
-        rowActions: [
-          { label: "Edit", name: "edit" },
-          { label: "Delete", name: "delete" }
-        ]
-      }
-    }
-  ];
-
-  handleRowAction(event) {
-    const action = event.detail.action;
-    const row = event.detail.row;
-
-    switch (action.name) {
-      case "edit":
-        this.openEditModel(row);
-        break;
-      case "delete":
-        this.openDeleteModel(row);
-        break;
-      default:
-        break;
-    }
-  }
-
-  openEditModel(row) {
-    this.selectedLead = { ...row };
-    this.isEditModelOpen = true;
-  }
-
-  closeEditModel() {
-    this.isEditModelOpen = false;
-    this.selectedLead = undefined;
-  }
-
-  handleLeadChange(event) {
-    const field = event.target.dataset.field;
-    this.selectedLead[field] = event.target.value;
-  }
-
-  updateLead() {
-    const fields = {
-      [LEAD_ID.fieldApiName]: this.selectedLead.Id,
-      [LEAD_FIRSTNAME.fieldApiName]: this.selectedLead.FirstName,
-      [LEAD_LASTNAME_FIELD.fieldApiName]: this.selectedLead.LastName,
-      [LEAD_EMAIL_FIELD.fieldApiName]: this.selectedLead.Email,
-      [LEAD_COMPANY_FIELD.fieldApiName]: this.selectedLead.Company,
-      [LEAD_PHONE_FIELD.fieldApiName]: this.selectedLead.Phone
-    };
-
-    const recordInput = { fields };
-
-    updateRecord(recordInput)
-      .then(() => {
-        this.showToast("Success", "Lead updated successfully", "success");
-        this.closeEditModel();
-        return refreshApex(this.wiredLeadsResult);
-      })
-      .catch((error) => {
-        this.showToast("Error", error.body.message, "error");
-      });
-  }
-
-  openDeleteModel(row) {
-    this.leadToDelete = row;
-    this.isDeleteModelOpen = true;
-  }
-
-  closeDeleteModel() {
-    this.isDeleteModelOpen = false;
-    this.leadToDelete = undefined;
-  }
-
-  deleteLead() {
-    deleteRecord(this.leadToDelete.Id)
-      .then(() => {
-        this.showToast("Success", "Lead deleted successfully", "success");
-        this.closeDeleteModel();
-        return refreshApex(this.wiredLeadsResult);
-      })
-      .catch((error) => {
-        this.showToast(
-          "Error",
-          "Error deleting lead: " + error.body.message,
-          "error"
-        );
-      });
-  }
-
-  showToast(title, message, variant) {
-    this.dispatchEvent(
-      new ShowToastEvent({
-        title,
-        message,
-        variant
-      })
-    );
-  }*/
   leads;
   @track editLead = {};
   isEditModelOpen = false;
   wiredLeadsResult;
+  selectedLeadId;
 
   @wire(getLeads)
   wireLeads(result) {
@@ -154,7 +24,7 @@ export default class LeadList extends LightningElement {
     if (result.data) {
       this.leads = result.data;
     } else if (result.error) {
-      this.leads = result.error.body.message;
+      this.error = result.error.body.message;
     }
   }
 
@@ -168,7 +38,8 @@ export default class LeadList extends LightningElement {
       typeAttributes: {
         rowActions: [
           { label: "Edit", name: "edit" },
-          { label: "Delete", name: "delete" }
+          { label: "Delete", name: "delete" },
+          { label: "View Details", name: "view_details" }
         ]
       }
     }
@@ -185,6 +56,9 @@ export default class LeadList extends LightningElement {
         break;
       case "delete":
         this.deleteLead(row.Id);
+        break;
+      case "view_details":
+        this.selectedLeadId = row.Id;
         break;
       default:
         break;

@@ -1,0 +1,19 @@
+<template>
+  <lightning-card title="Lead Details">
+    <template if:true={lead}>
+      <div class="slds-p-around_medium">
+        <!-- <p><b>Name:</b> {lead.fields.Name.value}</p>
+        <p><b>Email:</b> {lead.fields.Email.value}</p>
+        <p><b>Phone:</b> {lead.fields.Phone.value}</p>
+        <p><b>Company:</b> {lead.fields.Company.value}</p> -->
+        <p><b>Name:</b>{name}</p>
+        <p><b>Email:</b>{email}</p>
+        <p><b>Phone:</b>{phone}</p>
+        <p><b>Company:</b>{company}</p>
+      </div>
+    </template>
+    <template if:false={lead}>
+      <div class="slds-p-around_medium">Select a lead to view details</div>
+    </template>
+  </lightning-card>
+</template>
