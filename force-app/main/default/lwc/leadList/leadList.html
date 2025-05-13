@@ -1,6 +1,11 @@
 <template>
   <!-- Existing datatable -->
   <lightning-card title="Lead List with Actions">
+    <!-- Add loading spinner -->
+    <div if:true={isLoading} class="slds-is-relative">
+      <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+    </div>
+    
     <lightning-datatable
       key-field="Id"
       data={leads}

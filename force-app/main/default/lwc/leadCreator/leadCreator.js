@@ -1,13 +1,16 @@
-import { LightningElement } from "lwc";
+import { LightningElement, wire } from "lwc";
 import { createRecord } from "lightning/uiRecordApi";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
-import { NavigationMixin } from "lightning/navigation";
+import { fireEvent } from "c/pubsub";
+import { NavigationMixin, CurrentPageReference } from "lightning/navigation";
 
 import LEAD_FIRSTNAME from "@salesforce/schema/Lead.FirstName";
 import LEAD_LASTNAME from "@salesforce/schema/Lead.LastName";
 import LEAD_EMAIL from "@salesforce/schema/Lead.Email";
 import LEAD_COMPANY from "@salesforce/schema/Lead.Company";
 export default class LeadCreator extends NavigationMixin(LightningElement) {
+  @wire(CurrentPageReference) pageRef;
+
   newLead = {
     FirstName: "",
     LastName: "",
@@ -37,17 +40,21 @@ export default class LeadCreator extends NavigationMixin(LightningElement) {
     createRecord(recordInput)
       .then((lead) => {
         console.log("Lead record created: ", JSON.stringify(lead));
+        console.log("About to fire event with pageRef:", this.pageRef);
+
+        fireEvent(this.pageRef, "leadCreated", lead);
+        console.log("Evnet Fired: leadCreated");
+        this.showToast("Success", "Lead created successfully", "success");
+
         // Navigate to the record
-        this[NavigationMixin.Navigate]({
+       /* this[NavigationMixin.Navigate]({
           type: "standard__recordPage",
           attributes: {
             recordId: lead.id,
             objectApiName: "Lead",
             actionName: "view"
           }
-        });
-        this.showToast("Success", "Lead created successfully", "success");
-        // we can also reset field here
+        }); // we can also reset field here*/
         this.newLead = {};
       })
       .catch((error) => {

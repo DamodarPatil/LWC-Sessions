@@ -3,7 +3,8 @@ import { LightningElement, track, wire } from "lwc";
 import { refreshApex } from "@salesforce/apex";
 import { updateRecord, deleteRecord } from "lightning/uiRecordApi";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
-
+import { registerListener, unregisterAllListeners } from "c/pubsub";
+import { CurrentPageReference } from "lightning/navigation";
 // Import Field
 import LEAD_ID from "@salesforce/schema/Lead.Id";
 import LEAD_FIRSTNAME from "@salesforce/schema/Lead.FirstName";
@@ -18,6 +19,7 @@ export default class LeadList extends LightningElement {
   wiredLeadsResult;
   selectedLeadId;
 
+  @wire(CurrentPageReference) pageRef;
   @wire(getLeads)
   wireLeads(result) {
     this.wiredLeadsResult = result;
@@ -26,6 +28,19 @@ export default class LeadList extends LightningElement {
     } else if (result.error) {
       this.error = result.error.body.message;
     }
+  }
+
+  connectedCallback() {
+    registerListener("leadCreated", this.handleLeadCreated, this);
+  }
+
+  disconnectedCallback() {
+    unregisterAllListeners(this);
+  }
+
+  handleLeadCreated(payload) {
+    console.log("leadCreated event received with payload:", payload);
+    refreshApex(this.wiredLeadsResult);
   }
 
   columns = [
