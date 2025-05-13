@@ -7,11 +7,10 @@ import { ShowToastEvent } from "lightning/platformShowToastEvent";
 // Import Field
 import LEAD_ID from "@salesforce/schema/Lead.Id";
 import LEAD_FIRSTNAME from "@salesforce/schema/Lead.FirstName";
-import LEAD_LASTNAME_FIELD from "@salesforce/schema/Lead.LastName";
-import LEAD_EMAIL_FIELD from "@salesforce/schema/Lead.Email";
-import LEAD_COMPANY_FIELD from "@salesforce/schema/Lead.Company";
-import LEAD_PHONE_FIELD from "@salesforce/schema/Lead.Phone";
-
+import LEAD_LASTNAME from "@salesforce/schema/Lead.LastName";
+import LEAD_EMAIL from "@salesforce/schema/Lead.Email";
+import LEAD_COMPANY from "@salesforce/schema/Lead.Company";
+import LEAD_PHONE from "@salesforce/schema/Lead.Phone";
 export default class LeadList extends LightningElement {
   /*  leads;
   error;
@@ -206,10 +205,10 @@ export default class LeadList extends LightningElement {
     const fields = {
       [LEAD_ID.fieldApiName]: this.editLead.Id,
       [LEAD_FIRSTNAME.fieldApiName]: this.editLead.FirstName,
-      [LEAD_LASTNAME_FIELD.fieldApiName]: this.editLead.LastName,
-      [LEAD_EMAIL_FIELD.fieldApiName]: this.editLead.Email,
-      [LEAD_COMPANY_FIELD.fieldApiName]: this.editLead.Company,
-      [LEAD_PHONE_FIELD.fieldApiName]: this.editLead.Phone
+      [LEAD_LASTNAME.fieldApiName]: this.editLead.LastName,
+      [LEAD_EMAIL.fieldApiName]: this.editLead.Email,
+      [LEAD_COMPANY.fieldApiName]: this.editLead.Company,
+      [LEAD_PHONE.fieldApiName]: this.editLead.Phone
     };
     updateRecord({ fields })
       .then(() => {
