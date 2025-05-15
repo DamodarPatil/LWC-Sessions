@@ -1,3 +1,134 @@
 <template>
-    
+  <lightning-card title="Active Contact List">
+    <lightning-button
+      label="Load Contacts"
+      onclick={handleButtonClick}
+    ></lightning-button>
+    <template if:true={contacts}>
+      <!-- <ul>
+        <template for:each={contacts} for:item="contact">
+          <li key={contact.Id}>{contact.Name} - {contact.Email}</li>
+
+        </template>
+      </ul> -->
+      <template if:true={isModalOpen}>
+        <section
+          role="dialog"
+          tabindex="-1"
+          aria-labelledby="modal-heading-01"
+          aria-modal="true"
+          aria-describedby="modal-content-id-1"
+          class="slds-modal slds-fade-in-open"
+        >
+          <div class="slds-modal__container">
+            <header class="slds-modal__header">
+              <button
+                class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                title="Close"
+                onclick={closeModalHandler}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  version="1.1"
+                  width="256"
+                  height="256"
+                  viewBox="0 0 256 256"
+                  xml:space="preserve"
+                >
+                  <g
+                    style="
+                      stroke: none;
+                      stroke-width: 0;
+                      stroke-dasharray: none;
+                      stroke-linecap: butt;
+                      stroke-linejoin: miter;
+                      stroke-miterlimit: 10;
+                      fill: none;
+                      fill-rule: nonzero;
+                      opacity: 1;
+                    "
+                    transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)"
+                  >
+                    <circle
+                      cx="45"
+                      cy="45"
+                      r="45"
+                      style="
+                        stroke: none;
+                        stroke-width: 1;
+                        stroke-dasharray: none;
+                        stroke-linecap: butt;
+                        stroke-linejoin: miter;
+                        stroke-miterlimit: 10;
+                        fill: rgb(230, 62, 50);
+                        fill-rule: nonzero;
+                        opacity: 1;
+                      "
+                      transform="  matrix(1 0 0 1 0 0) "
+                    />
+                    <path
+                      d="M 27.169 64.83 c -0.512 0 -1.024 -0.195 -1.414 -0.586 c -0.781 -0.781 -0.781 -2.047 0 -2.828 l 35.661 -35.661 c 0.781 -0.781 2.047 -0.781 2.828 0 c 0.781 0.781 0.781 2.047 0 2.828 L 28.583 64.244 C 28.193 64.635 27.681 64.83 27.169 64.83 z"
+                      style="
+                        stroke: none;
+                        stroke-width: 1;
+                        stroke-dasharray: none;
+                        stroke-linecap: butt;
+                        stroke-linejoin: miter;
+                        stroke-miterlimit: 10;
+                        fill: rgb(255, 255, 255);
+                        fill-rule: nonzero;
+                        opacity: 1;
+                      "
+                      transform=" matrix(1 0 0 1 0 0) "
+                      stroke-linecap="round"
+                    />
+                    <path
+                      d="M 62.83 64.83 c -0.512 0 -1.023 -0.195 -1.414 -0.586 L 25.755 28.583 c -0.781 -0.781 -0.781 -2.047 0 -2.828 c 0.78 -0.781 2.048 -0.781 2.828 0 l 35.661 35.661 c 0.781 0.781 0.781 2.047 0 2.828 C 63.854 64.635 63.342 64.83 62.83 64.83 z"
+                      style="
+                        stroke: none;
+                        stroke-width: 1;
+                        stroke-dasharray: none;
+                        stroke-linecap: butt;
+                        stroke-linejoin: miter;
+                        stroke-miterlimit: 10;
+                        fill: rgb(255, 255, 255);
+                        fill-rule: nonzero;
+                        opacity: 1;
+                      "
+                      transform=" matrix(1 0 0 1 0 0) "
+                      stroke-linecap="round"
+                    />
+                  </g>
+                </svg>
+                <span class="slds-assistive-text">Close</span>
+              </button>
+              <h2
+                id="modal-heading-01"
+                class="slds-modal__title slds-hyphenate"
+              >
+                Active Contact List
+              </h2>
+            </header>
+            <div
+              class="slds-modal__content slds-p-around_medium"
+              id="modal-content-id-1"
+            >
+              <lightning-datatable
+                key-field="Id"
+                data={contacts}
+                columns={columns}
+                onrowaction={handleRowAction}
+              >
+              </lightning-datatable>
+            </div>
+          </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+      </template>
+    </template>
+    <template if:true={error}>
+      <p class="slds-text-color_error">Error: {error}</p>
+    </template>
+  </lightning-card>
 </template>
