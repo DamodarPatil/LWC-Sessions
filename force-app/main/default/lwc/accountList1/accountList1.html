@@ -1,0 +1,8 @@
+<template>
+    <lightning-button onclick={handleGetAccount}></lightning-button>
+    <template if:true={data}>
+        <template for:each={data} for:item="account">
+            <p key={account.Id}>{account.name}</p>
+        </template>
+    </template>
+</template>

@@ -1,0 +1,13 @@
+<template>
+  <lightning-card title="Lead List">
+    <template for:each={leads} for:item="lead">
+      <c-lead-card-1
+        key={lead.Id}
+        lead-id={lead.Id}
+        onnewstatus={updateLeadStatus}
+        lead-name={lead.leadName}
+        lead-status={lead.leadStatus}
+      ></c-lead-card-1>
+    </template>
+  </lightning-card>
+</template>
