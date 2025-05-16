@@ -25,8 +25,10 @@ export default class CodingProblem1A extends NavigationMixin(LightningElement) {
   }
 
   handleButtonClick() {
+    if (!this.contacts) {
+      this.loadContacts();
+    }
     this.isModalOpen = true;
-    this.loadContacts();
   }
 
   columns = [

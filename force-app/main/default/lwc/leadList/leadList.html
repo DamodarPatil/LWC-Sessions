@@ -3,9 +3,12 @@
   <lightning-card title="Lead List with Actions">
     <!-- Add loading spinner -->
     <div if:true={isLoading} class="slds-is-relative">
-      <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+      <lightning-spinner
+        alternative-text="Loading"
+        size="medium"
+      ></lightning-spinner>
     </div>
-    
+
     <lightning-datatable
       key-field="Id"
       data={leads}
@@ -72,8 +75,8 @@
 
   <lightning-card>
     <div class="slds-col slds-size_5-of-12">
-    <!-- Child Component -->
-     <c-lead-detail lead-id={selectedLeadId}></c-lead-detail>
-  </div>
+      <!-- Child Component -->
+      <c-lead-detail lead-id={selectedLeadId}></c-lead-detail>
+    </div>
   </lightning-card>
 </template>
