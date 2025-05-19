@@ -1,22 +1,23 @@
 import { api, LightningElement, wire } from "lwc";
 import getContacts from "@salesforce/apex/CodingProblem1Controller.getContacts";
 import { refreshApex } from "@salesforce/apex";
-import CONTACT_FIRSTNAME from "@salesforce/schema/Contact.FirstName";
-import CONTACT_LASTNAME from "@salesforce/schema/Contact.LastName";
-import CONTACT_EMAIL from "@salesforce/schema/Contact.Email";
 import createContactRecord from "@salesforce/apex/CodingProblem1Controller.createContactRecord";
+import updateContactRecord from "@salesforce/apex/CodingProblem1Controller.updateContactRecord";
+import deleteContactRecord from "@salesforce/apex/CodingProblem1Controller.deleteContactRecord";
 
 export default class CodingProblem2A extends LightningElement {
   @api recordId;
   contacts;
   wiredContactsResult;
   isCreateModelOpen = false;
+  isEditModelOpen = false;
+  isDropDownOpen = false;
+  toggleContact = {};
+  selectedContactId;
 
-  newContact = {
-    FirstName: "",
-    LastName: "",
-    Email: ""
-  };
+  newContact = {};
+
+  editContact = {};
 
   @wire(getContacts, { accountId: "$recordId" })
   wiredcontacts(result) {
@@ -30,6 +31,19 @@ export default class CodingProblem2A extends LightningElement {
     }
   }
 
+  //   contactId(event) {
+  //     console.log("Toggle Called");
+  //     const Id = event.target.dataset.contactId;
+  //     console.log("Id pass", Id);
+  //     this.toggleContact = this.contacts.find((contact) => contact.Id === Id);
+  //     console.log(this.toggleContact);
+
+  //     if (Id === this.toggleContact.Id) {
+  //       console.log("In if condition");
+  //       this.DropDownToggle();
+  //     }
+  //   }
+
   openModel() {
     this.isCreateModelOpen = true;
   }
@@ -38,25 +52,89 @@ export default class CodingProblem2A extends LightningElement {
     this.isCreateModelOpen = false;
   }
 
+  openEditModel(event) {
+    console.log("openEditModel called");
+    const Id = event.target.dataset.contactId;
+    console.log("Id pass", Id);
+    this.editContact = {
+      ...this.contacts.find((contact) => contact.Id === Id)
+    };
+    console.log("EditContact got the value", this.editContact);
+    this.isEditModelOpen = true;
+  }
+
+  closeEditModel() {
+    this.isEditModelOpen = false;
+  }
+
+  DropDownToggle() {
+    return this.isDropDownOpen === false
+      ? (this.isDropDownOpen = true)
+      : (this.isDropDownOpen = false);
+  }
+
   handleInputChange(event) {
     const field = event.target.dataset.field;
     this.newContact[field] = event.target.value;
   }
 
+  handleEditChange(event) {
+    const field = event.target.dataset.field;
+    this.editContact[field] = event.target.value;
+  }
+
+  //   Create Contact
   createContact() {
     const fields = {
-      [CONTACT_FIRSTNAME.fieldApiName]: this.newContact.FirstName,
-      [CONTACT_LASTNAME.fieldApiName]: this.newContact.LastName,
-      [CONTACT_EMAIL.fieldApiName]: this.newContact.Email,
-      accountId: this.recordId
+      FirstName: this.newContact.FirstName,
+      LastName: this.newContact.LastName,
+      Email: this.newContact.Email,
+      AccountId: this.recordId
     };
 
-    let contactString = JSON.stringify(fields);
+    createContactRecord({ fields })
+      .then((contact) => {
+        console.log(contact);
+        this.closeModel();
+        return refreshApex(this.wiredContactsResult);
+      })
+      .catch((error) => {
+        console.log(error.body.message);
+      });
+  }
 
-    createContactRecord({ contactJSON: contactString }).then((contact) => {
-      console.log("Lead record created: ", JSON.stringify(contact));
-      this.closeModel();
-      return refreshApex(this.wiredContactsResult);
-    });
+  // update Account
+  updateContact() {
+    const fields = {
+      Id: this.editContact.Id,
+      FirstName: this.editContact.FirstName,
+      LastName: this.editContact.LastName,
+      Email: this.editContact.Email,
+      AccountId: this.recordId
+    };
+
+    updateContactRecord({ fields })
+      .then((contact) => {
+        console.log(contact);
+        this.closeEditModel();
+        return refreshApex(this.wiredContactsResult);
+      })
+      .catch((error) => {
+        console.log(error.body.message);
+      });
+  }
+
+  deleteContactRec(event) {
+    console.log("In deleteContactRec");
+    const contactId = event.target.dataset.contactId;
+
+    deleteContactRecord({ contactId })
+      .then((contact) => {
+        console.log("Contact record deleted:", contact);
+        return refreshApex(this.wiredContactsResult);
+      })
+      .catch((error) => {
+        console.log(error.body.message);
+      });
   }
 }

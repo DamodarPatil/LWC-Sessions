@@ -1,0 +1,156 @@
+<template>
+  <lightning-card title="Contact List">
+    <lightning-button size="x-small" onclick={openModel} label="New">
+    </lightning-button>
+
+    <table>
+      <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Email</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <template for:each={contacts} for:item="contact">
+          <tr key={contact.Id}>
+            <td>{contact.FirstName}</td>
+            <td>{contact.LastName}</td>
+            <td>{contact.Email}</td>
+            <td>
+              <lightning-button
+                size="x-small"
+                data-contactid={contact.Id}
+                onclick={openEditModel}
+                icon-name="utility:edit"
+              >
+              </lightning-button>
+            </td>
+            <td>
+              <lightning-button
+                size="x-small"
+                data-contactid={contact.Id}
+                onclick={deleteContactRec}
+                icon-name="utility:delete"
+              >
+              </lightning-button>
+            </td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+    <template if:true={isCreateModelOpen}>
+      <section
+        role="dialog"
+        tabindex="-1"
+        aria-labelledby="modal-heading-01"
+        aria-modal="true"
+        aria-describedby="modal-content-id-1"
+        class="slds-modal slds-fade-in-open"
+      >
+        <div class="slds-modal__container">
+          <header class="slds-modal__header">
+            <button
+              class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+              title="Close"
+              onclick={closeModel}
+            >
+              <lightning-icon
+                icon-name="utility:close"
+                size="small"
+                alternative-text="Close"
+              ></lightning-icon>
+              <span class="slds-assistive-text">Close</span>
+            </button>
+            <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">
+              Create Contact
+            </h2>
+          </header>
+          <div
+            class="slds-modal__content slds-p-around_medium"
+            id="modal-content-id-1"
+          >
+            <lightning-record-edit-form
+              object-api-name="Contact"
+              onsuccess={handleSuccess}
+              onsubmit={handeSubmit}
+            >
+              <lightning-input-field field-name="FirstName">
+              </lightning-input-field>
+              <lightning-input-field
+                field-name="LastName"
+              ></lightning-input-field>
+              <lightning-input-field field-name="Email"></lightning-input-field>
+              <lightning-input
+                field-name="AccountId"
+                value={recordId}
+              ></lightning-input>
+              <lightning-button
+                class="slds-m-top_small"
+                type="submit"
+                label="Submit"
+              >
+              </lightning-button>
+            </lightning-record-edit-form>
+          </div>
+        </div>
+      </section>
+      <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <template if:true={isEditModelOpen}>
+      <section
+        role="dialog"
+        tabindex="-1"
+        aria-labelledby="modal-heading-01"
+        aria-modal="true"
+        aria-describedby="modal-content-id-2"
+        class="slds-modal slds-fade-in-open"
+      >
+        <div class="slds-modal__container">
+          <header class="slds-modal__header">
+            <button
+              class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+              title="Close"
+              onclick={closeEditModel}
+            >
+              <lightning-icon
+                icon-name="utility:close"
+                size="small"
+                alternative-text="Close"
+              ></lightning-icon>
+            </button>
+            <h2 id="modal-heading-02" class="slds-modal__title slds-hyphenate">
+              Edit Contact
+            </h2>
+          </header>
+          <div
+            class="slds-modal__content slds-p-around_medium"
+            id="modal-content-id-2"
+          >
+            <lightning-record-edit-form
+              object-api-name="Contact"
+              onsuccess={handleEditSuccess}
+            >
+              <lightning-input-field field-name="FirstName">
+              </lightning-input-field>
+              <lightning-input-field
+                field-name="LastName"
+              ></lightning-input-field>
+              <lightning-input-field field-name="Email"></lightning-input-field>
+              <lightning-button
+                class="slds-m-top_small"
+                type="submit"
+                label="Submit"
+              >
+              </lightning-button>
+            </lightning-record-edit-form>
+          </div>
+        </div>
+      </section>
+      <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+  </lightning-card>
+</template>

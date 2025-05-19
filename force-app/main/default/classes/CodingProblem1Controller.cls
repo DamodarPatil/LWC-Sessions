@@ -18,34 +18,33 @@ public with sharing class CodingProblem1Controller {
   }
 
   @AuraEnabled
-  public static Contact createContactRecord(String contactJSON) {
+  public static Contact createContactRecord(Contact fields) {
     try {
-      ContactWrapper contactWrapperRec = (ContactWrapper) JSON.deserialize(
-        contactJSON,
-        ContactWrapper.class
-      );
-
-      if (contactWrapperRec != null) {
-        Contact conRec = new Contact();
-        conRec.FirstName = contactWrapperRec.firstName;
-        conRec.LastName = contactWrapperRec.lastName;
-        conRec.Email = contactWrapperRec.email;
-        conRec.AccountId = contactWrapperRec.accountId;
-
-        insert conRec;
-
-        return conRec;
-      }
-      return null;
+      insert fields;
+      return fields;
     } catch (Exception e) {
       throw new AuraHandledException(e.getMessage());
     }
   }
 
-  public class ContactWrapper {
-    public String firstName;
-    public String lastName;
-    public String accountId;
-    public String email;
+  @AuraEnabled
+  public static Contact updateContactRecord(Contact fields) {
+    try {
+      update fields;
+      return fields;
+    } catch (Exception e) {
+      throw new AuraHandledException(e.getMessage());
+    }
+  }
+
+  @AuraEnabled
+  public static Boolean deleteContactRecord(String contactId) {
+    try {
+      delete [SELECT Id FROM Contact WHERE Id = :contactId];
+
+      return true;
+    } catch (Exception e) {
+      throw new AuraHandledException(e.getMessage());
+    }
   }
 }
