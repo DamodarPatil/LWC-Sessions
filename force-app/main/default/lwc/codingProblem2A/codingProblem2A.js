@@ -14,6 +14,7 @@ export default class CodingProblem2A extends LightningElement {
   isDropDownOpen = false;
   toggleContact = {};
   selectedContactId;
+  Id;
 
   newContact = {};
 
@@ -31,18 +32,32 @@ export default class CodingProblem2A extends LightningElement {
     }
   }
 
-  //   contactId(event) {
-  //     console.log("Toggle Called");
-  //     const Id = event.target.dataset.contactId;
-  //     console.log("Id pass", Id);
-  //     this.toggleContact = this.contacts.find((contact) => contact.Id === Id);
-  //     console.log(this.toggleContact);
+  toggleTargetedContact(event) {
+    console.log("Toggle Called");
+    this.Id = event.target.dataset.contactId;
+    console.log("Id pass", this.Id);
+    this.toggleContact = {
+      ...this.contacts.find((contact) => contact.Id === this.Id)
+    };
+    console.log(this.toggleContact.Id);
 
-  //     if (Id === this.toggleContact.Id) {
-  //       console.log("In if condition");
-  //       this.DropDownToggle();
-  //     }
-  //   }
+    if (this.Id === this.toggleContact.Id) {
+      console.log("In if condition");
+      console.log(this.Id);
+      console.log(this.toggleContact.Id);
+      this.DropDownToggle();
+    }
+    //   this.isDropDownOpen = true;
+    //else if (Id !== this.toggleContact.Id) {
+    //   console.log("IN else Condtion");
+    //   this.isDropDownOpen = false;
+    // }
+  }
+
+//   get getTargetContact() {
+//     console.log("IN Getter Function");
+//     return this.Id === this.toggleContact.Id ? true : false;
+//   }
 
   openModel() {
     this.isCreateModelOpen = true;
@@ -68,6 +83,9 @@ export default class CodingProblem2A extends LightningElement {
   }
 
   DropDownToggle() {
+    console.log("IN DropDowntoggle", this.toggleContact.Id);
+    console.log("Id", this.Id);
+
     return this.isDropDownOpen === false
       ? (this.isDropDownOpen = true)
       : (this.isDropDownOpen = false);
@@ -99,7 +117,7 @@ export default class CodingProblem2A extends LightningElement {
         return refreshApex(this.wiredContactsResult);
       })
       .catch((error) => {
-        console.log(error.body.message);
+        console.error(error.body.message);
       });
   }
 
@@ -120,7 +138,7 @@ export default class CodingProblem2A extends LightningElement {
         return refreshApex(this.wiredContactsResult);
       })
       .catch((error) => {
-        console.log(error.body.message);
+        console.error(error.body.message);
       });
   }
 
@@ -134,7 +152,7 @@ export default class CodingProblem2A extends LightningElement {
         return refreshApex(this.wiredContactsResult);
       })
       .catch((error) => {
-        console.log(error.body.message);
+        console.error(error.body.message);
       });
   }
 }

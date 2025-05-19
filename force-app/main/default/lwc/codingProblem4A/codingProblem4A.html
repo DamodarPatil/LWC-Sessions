@@ -9,11 +9,11 @@
           <th>First Name</th>
           <th>Last Name</th>
           <th>Email</th>
-          <th>Edit</th>
-          <th>Delete</th>
+          <th>Edit/delete</th>
         </tr>
       </thead>
       <tbody>
+        
         <template for:each={contacts} for:item="contact">
           <tr key={contact.Id}>
             <td>{contact.FirstName}</td>
@@ -22,16 +22,14 @@
             <td>
               <lightning-button
                 size="x-small"
-                data-contactid={contact.Id}
+                data-contact-id={contact.Id}
                 onclick={openEditModel}
                 icon-name="utility:edit"
               >
               </lightning-button>
-            </td>
-            <td>
               <lightning-button
                 size="x-small"
-                data-contactid={contact.Id}
+                data-contact-id={contact.Id}
                 onclick={deleteContactRec}
                 icon-name="utility:delete"
               >
@@ -41,6 +39,7 @@
         </template>
       </tbody>
     </table>
+    <!-- Create Contact -->
     <template if:true={isCreateModelOpen}>
       <section
         role="dialog"
@@ -73,24 +72,26 @@
             id="modal-content-id-1"
           >
             <lightning-record-edit-form
-              object-api-name="Contact"
+              object-api-name={objectApiName}
               onsuccess={handleSuccess}
-              onsubmit={handeSubmit}
             >
-              <lightning-input-field field-name="FirstName">
-              </lightning-input-field>
+              <lightning-input-field
+                field-name="FirstName"
+              ></lightning-input-field>
               <lightning-input-field
                 field-name="LastName"
               ></lightning-input-field>
-              <lightning-input-field field-name="Email"></lightning-input-field>
-              <lightning-input
+              <lightning-input-field field-name="Email">
+              </lightning-input-field>
+              <lightning-input-field
                 field-name="AccountId"
                 value={recordId}
-              ></lightning-input>
+              ></lightning-input-field>
               <lightning-button
                 class="slds-m-top_small"
                 type="submit"
                 label="Submit"
+                onclick={closeEditModel}
               >
               </lightning-button>
             </lightning-record-edit-form>
@@ -100,6 +101,7 @@
       <div class="slds-backdrop slds-backdrop_open"></div>
     </template>
 
+    <!-- Edit Contact -->
     <template if:true={isEditModelOpen}>
       <section
         role="dialog"
@@ -131,15 +133,18 @@
             id="modal-content-id-2"
           >
             <lightning-record-edit-form
-              object-api-name="Contact"
+              object-api-name={objectApiName}
               onsuccess={handleEditSuccess}
+              record-id={editContact.Id}
             >
-              <lightning-input-field field-name="FirstName">
+              <lightning-input-field field-name={editContact.FirstName}>
               </lightning-input-field>
               <lightning-input-field
-                field-name="LastName"
+                field-name={editContact.LastName}
               ></lightning-input-field>
-              <lightning-input-field field-name="Email"></lightning-input-field>
+              <lightning-input-field
+                field-name={editContact.Email}
+              ></lightning-input-field>
               <lightning-button
                 class="slds-m-top_small"
                 type="submit"

@@ -38,7 +38,7 @@ public with sharing class CodingProblem1Controller {
   }
 
   @AuraEnabled
-  public static Boolean deleteContactRecord(String contactId) {
+  public static Boolean deleteContactRecord(Id contactId) {
     try {
       delete [SELECT Id FROM Contact WHERE Id = :contactId];
 

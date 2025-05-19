@@ -21,7 +21,8 @@
             <td>
               <lightning-button
                 icon-name="utility:chevrondown"
-                onclick={DropDownToggle}
+                onclick={toggleTargetedContact}
+                data-contact-id={contact.Id}
               ></lightning-button>
               <template if:true={isDropDownOpen}>
                 <ul>
