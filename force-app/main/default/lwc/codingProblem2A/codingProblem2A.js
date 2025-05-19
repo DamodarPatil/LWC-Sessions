@@ -54,6 +54,14 @@ export default class CodingProblem2A extends LightningElement {
     // }
   }
 
+  DropDownToggle() {
+    console.log("IN DropDowntoggle", this.toggleContact.Id);
+    console.log("Id", this.Id);
+
+    return this.isDropDownOpen === false
+      ? (this.isDropDownOpen = true)
+      : (this.isDropDownOpen = false);
+  }
 //   get getTargetContact() {
 //     console.log("IN Getter Function");
 //     return this.Id === this.toggleContact.Id ? true : false;
@@ -82,14 +90,6 @@ export default class CodingProblem2A extends LightningElement {
     this.isEditModelOpen = false;
   }
 
-  DropDownToggle() {
-    console.log("IN DropDowntoggle", this.toggleContact.Id);
-    console.log("Id", this.Id);
-
-    return this.isDropDownOpen === false
-      ? (this.isDropDownOpen = true)
-      : (this.isDropDownOpen = false);
-  }
 
   handleInputChange(event) {
     const field = event.target.dataset.field;
